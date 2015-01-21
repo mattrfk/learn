@@ -106,11 +106,11 @@ console.log(+n); // explicit conversion with unary +
 function area(r) {r = +r; return Math.PI * r * r } // a required semicolon
 
 // semicolons are only inserted when the next input token cannot be parsed
-a = b // no semicolon will be inserted here. a = b(f()); is valid
-(f());
+// a = b // no semicolon will be inserted here. a = b(f()); is valid
+// (area());
 
-a = b // a semicolon will be insertered here.
-f(); 
+// a = b // a semicolon will be insertered here.
+// area(); 
 
 // if a file starts with a vulnerable character
 // ( [ + - /
@@ -123,3 +123,32 @@ f();
 // strings: sequences of 16-bit code units
 // unicode: every character has a value 0-1114111 (code point)
 // unicode allows multiple binary encodings (UTF-8, UTF-16, UTF-32 etc)
+
+
+/****************************************
+* Chapter 2 - Variable Scope
+****************************************/
+var a = 10; // global
+
+function thing(i) {
+    var b; // not global
+    var a = 3; // global a is not accessible anymore
+    console.log(a); // 3
+}
+
+thing(1);
+
+console.log(a); // 10
+
+
+this // is the global object
+// in browsers, this is bound to global window variable
+// adding a global variable updates the global object automagically
+
+var x = 3;
+x = 7;
+console.log(this);
+this.x = 100;
+console.log(this);
+// this doesn't appear to be the global object
+console.log("modified from this " + x); // x should be 100? I'm confused..
