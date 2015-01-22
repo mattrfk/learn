@@ -1,0 +1,39 @@
+leiningen
+    clojure build tool
+
+fireplace
+    REPL - Read Eval Print Loop
+    jump to source
+    omni complete
+    connect to an nREPL server and evaluate code from a buffer
+    :Connect
+    cpr - clojure please require
+    cpp clojure please print
+    cqp clojure quick print
+
+    [   jump to definition of symbol
+    K   documentation of symbol
+
+surround.vim
+    change, add, remove braces and aprens
+
+vim-sexp
+    provides text objects for lisp patterns
+    daf to delete around current compound form
+        
+    Tim Pope - vim-sexp-mappings-for-regular-people
+
+clojure syntax
+    https://github.com/guns/vim-clojure-static
+        shipped with vim >7.3
+    https://github.com/guns/vim-clojure-highlight
+
+integrate fireplace with leiningen
+    https://github.com/tpope/vim-leiningen
+
+paredit
+    slurp, barf, mantain matching
+    overrides D and x
+
+rainbow_parentheses.vim
+    :RainbowParenthesesToggle

@@ -152,3 +152,4 @@ this.x = 100;
 console.log(this);
 // this doesn't appear to be the global object
 console.log("modified from this " + x); // x should be 100? I'm confused..
+// answer: this references node's module object, not a global object
