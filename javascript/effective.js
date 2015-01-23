@@ -153,3 +153,47 @@ console.log(this);
 // this doesn't appear to be the global object
 console.log("modified from this " + x); // x should be 100? I'm confused..
 // answer: this references node's module object, not a global object
+
+// use global object for feature detection
+
+function swap() {
+    a = 3; // unboound variable = global
+    var b = 2; // local variabl
+}
+
+// with is unsafe and hard to optimize. Avoid it
+
+// You can access variables declared outside of the current function
+//      lexical scope
+// Functions can access variables declared in outer functions
+// after those variables have returned.
+function greetingBuilder(greeting, exclamation) {
+
+    // this is a closure, becaues it refers to external variables
+    // greeting and exclamation
+    // it stores a reference to outer variables, and can even update them!
+    function buildGreeting( name  ) {
+        return greeting + " " + name + exclamation;
+    }
+    return buildGreeting; // return an inner function, to be called later
+    // function values internally store any variables they need
+    // to access from their containing scopes.
+    // this is called a closure
+}
+
+// 2 distinct functions are created from the same definition
+var f = greetingBuilder("hello", "!!!!!");
+var f2 = greetingBuilder("howdy", "?");
+
+var g1 = f("matt");
+var g2 = f2("matt");
+console.log(g1);
+console.log(g2);
+
+// same as above, but using a function expression
+function greetingBuilder(greeting, exclamation) {
+    // this function expression is anonymouse but they can have names
+    return function buildGreeting( name  ) {
+        return greeting + " " + name + exclamation;
+    }
+}
