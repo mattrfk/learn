@@ -192,8 +192,57 @@ console.log(g2);
 
 // same as above, but using a function expression
 function greetingBuilder(greeting, exclamation) {
+    // this is a function expression
     // this function expression is anonymouse but they can have names
     return function buildGreeting( name  ) {
         return greeting + " " + name + exclamation;
     }
 }
+
+function box() {
+    var val = undefined;
+
+    //return an object containing 3 closures
+    return {
+        set: function(newVal) { val = newVal; },
+        get: function() { return val; },
+        type: function() { return typeof val; }
+    }
+}
+
+var b = new box();
+// accessing variable within outer scope (the box object)
+b.set("hello"); // set has its own reference to val
+console.log("my box contains a " + b.type() + " with value " + b.get());
+
+// javascript has lexical/static scoping
+// except the scope is defined by the function, not any block
+
+// when a variable is declared, it is 'hoisted' to the top of its scope
+
+// this function....
+function a() {
+    for(var i = 0; i < 10; i++){
+        console.log(i);
+    }
+    
+    for(var i = 0; i < 10; i++){
+        console.log(i-10);
+    }
+}
+
+// gets hoisted into this version
+// this happens before any code is executed
+function b() {
+    var i = 0;
+    for(i = 0; i < 10; i++)
+        console.log(i-10);
+    }
+    for(i = 0; i < 10; i++){
+        console.log(i-10);
+    }
+}
+
+// mdn recommends declaring variables at the top of their scope.
+// a counterargument to this is that code is written for developers first,
+// computers second.
