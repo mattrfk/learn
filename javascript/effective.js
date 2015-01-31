@@ -217,6 +217,7 @@ console.log("my box contains a " + b.type() + " with value " + b.get());
 
 // javascript has lexical/static scoping
 // except the scope is defined by the function, not any block
+// except catch blocks have their own scope...
 
 // when a variable is declared, it is 'hoisted' to the top of its scope
 
@@ -235,7 +236,7 @@ function a() {
 // this happens before any code is executed
 function b() {
     var i = 0;
-    for(i = 0; i < 10; i++)
+    for(i = 0; i < 10; i++){
         console.log(i-10);
     }
     for(i = 0; i < 10; i++){
@@ -246,3 +247,22 @@ function b() {
 // mdn recommends declaring variables at the top of their scope.
 // a counterargument to this is that code is written for developers first,
 // computers second.
+
+// hacked block scope 
+(function() {
+    console.log("hello, I am an IIFE - Imediately invoked function expression");
+})();
+
+// this is a function declaration.. a global named function
+// the function is bound to 'double'
+function double(x) { return x * 2; }
+
+// This is a function expression, the function is bound to 'f'
+var f = function double(x) {return x *2}
+
+// this is a named function epxression, it's pretty much the same as an anonymous
+// version, but I can call with the name 'double' from within the function body.
+// for recursion and stuff. Or you could just use the assigned name that's available
+// in the outer scope.
+// the name can be useful for stack traces though...
+var f = function double(x) {return x *2}
