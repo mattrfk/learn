@@ -17,6 +17,9 @@ fireplace
 surround.vim
     change, add, remove braces and aprens
 
+vim-clojure-static
+    syntax highlighting
+
 vim-sexp
     provides text objects for lisp patterns
     daf to delete around current compound form
