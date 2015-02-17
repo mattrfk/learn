@@ -48,6 +48,7 @@
 (trem2)
 (stop)
 
+; examples from https://skillsmatter.com/skillscasts/2894-clojurex-unpanel-2894#showModal?modal-signup-complete
 ;=======================================
 (definst basic-sine [freq 440]
   (sin-osc freq))
@@ -85,3 +86,89 @@
   (let [wobbler (* wobble-depth (sin-osc wobble-freq))
         freq (+ pitch-freq wobbler)]
     (sin-osc freq)))
+
+(wobbled-sin)
+(stop)
+
+(definst dubstep [freq 100 wobble-freq 2]
+  (let [sweep (lin-exp (lf-saw wobble-freq) -1 1 40 5000)
+        son (mix (saw (* freq [0.99 1 1.01])))]
+    (lpf son sweep)))
+
+(dubstep)
+(dubstep 150 4)
+(dubstep 250 2)
+(dubstep 100 3)
+(dubstep 80 1)
+(stop)
+
+; controlling the frequency after it has started
+(ctl dubstep :wobble-freq 6)
+(ctl dubstep :wobble-freq 3)
+(ctl dubstep :wobble-freq 2)
+
+; MIDI notes
+; 60 = middle c
+; 12 semitones = 72 = 1 octave
+(dubstep (midi->hz 60))
+
+; clojure keywords
+(dubstep (midi->hz (note :c4)))
+
+; more concise: define a vector of notes
+(def notes (vec (map (comp midi->hz note) [:c3 :g3 :e3])))
+(dubstep (notes 0))
+(dubstep (notes 1))
+(dubstep (notes 2))
+
+
+; =========================
+; Rythms
+; =========================
+
+; shape white noise with a percussive envelope
+(definst hat [volume 1.0]
+  (let [src (white-noise)
+        env (env-gen (perc 0.0001 0.3) :action FREE)]
+    (* volume 3 src env)))]
+
+(hat)
+
+; TODO: lin-env? 
+(definst kick [volume 1.0]
+  (let [body-freq (* 220 (env-gen (lin 0.01 0 0.3 1) :action NO-ACTION))
+        body (sin-osc body-freq)
+
+        pop-freq (+ 220 (* 200 (env-gen (lin 0.01 0 0.1 1) :action NO-ACTION)))
+        pop (sin-osc pop-freq)
+
+        env (env-gen (perc 0.001 0.25) :action FREE)
+      ]
+    (* 4 env (+ body pop))))
+
+; schedule beats to happen in the future
+
+(at (+ 1000 (now)) (hat))
+
+(let
+  [time (now)]
+  (at (+    0 time) (hat) )
+  (at (+  400 time) (hat) )
+  (at (+  600 time) (hat) )
+  (at (+  800 time) (hat) )
+  (at (+ 1000 time) (hat) )
+  )
+
+
+(stop)
+(loop-beats (now))
+(defn loop-beats [time]
+  [time (now)]
+  (at (+    0 time) (hat) )
+  (at (+  400 time) (kick) )
+  (at (+  600 time) (hat) )
+  (at (+  800 time) (hat) )
+  (at (+  900 time) (kick) )
+  (at (+  1100 time) (hat) )
+  (at (+  1200 time) (hat) )
+  (apply-at (+ 0 time) loop-beats (+ 1400 time) []))
